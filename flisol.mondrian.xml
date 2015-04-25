@@ -2,17 +2,17 @@
   <Cube name="FLISOL" caption="FLISOL" visible="true" description="Estat&#237;sticas Flisol no Brasil" cache="false" enabled="true">
     <Table name="fato_flisol">
     </Table>
-    <Dimension type="TimeDimension" visible="true" foreignKey="key_tempo_data" name="Datas" description="Datas">
+    <Dimension type="TimeDimension" visible="true" foreignKey="key_tempo_data" highCardinality="false" name="Datas" description="Datas">
       <Hierarchy name="Data" visible="true" hasAll="true" allMemberName="Datas" allMemberCaption="Datas" primaryKey="key_tempo_data" description="Data do Evento">
-        <Table name="dim_tempo_data" alias="">
+        <Table name="dim_tempo_data">
         </Table>
         <Level name="Ano" visible="true" table="dim_tempo_data" column="dat_ano" type="Integer" uniqueMembers="true" levelType="TimeYears" hideMemberIf="Never" description="Ano">
         </Level>
-        <Level name="Mes" visible="true" table="dim_tempo_data" column="dat_mes_reduz" ordinalColumn="dat_mes" type="String" uniqueMembers="true" levelType="TimeMonths" description="Mes">
+        <Level name="Mes" visible="true" table="dim_tempo_data" column="dat_mes_reduz" ordinalColumn="dat_mes" type="String" uniqueMembers="true" levelType="TimeMonths" hideMemberIf="Never" description="Mes">
         </Level>
       </Hierarchy>
     </Dimension>
-    <Dimension type="StandardDimension" visible="true" foreignKey="key_municipio" name="Municipios">
+    <Dimension type="StandardDimension" visible="true" foreignKey="key_municipio" highCardinality="false" name="Municipios">
       <Hierarchy name="Municipio" visible="true" hasAll="true" primaryKey="key_municipio">
         <Table name="dim_municipios">
         </Table>
@@ -28,11 +28,29 @@
         </Level>
       </Hierarchy>
     </Dimension>
-    <Measure name="Municipios" column="key_municipio" datatype="Integer" aggregator="count" visible="true">
+    <Measure name="Municipios" column="key_municipio" datatype="Integer" aggregator="distinct count" visible="true">
+    </Measure>
+    <Measure name="Distro Disp" column="qtd_distro_disp" datatype="Integer" aggregator="sum" description="Distros Disponiveis" visible="true">
+    </Measure>
+    <Measure name="Distro Instalada" column="qtd_distro_instala" datatype="Integer" aggregator="distinct-count" visible="true">
+    </Measure>
+    <Measure name="Instalacoes Totais" column="qtd_instalacao" datatype="Integer" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="Organizadores" column="qtd_organizador" datatype="Integer" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="Palestrante" column="qtd_palestrante" datatype="Integer" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="Organizador Palestrante" column="qtd_palest_organiz" datatype="Integer" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="Visitantes" column="qtd_visitantes" datatype="Integer" aggregator="sum" visible="true">
     </Measure>
     <Measure name="Palestras" column="qtd_palestras" datatype="Integer" aggregator="sum" visible="true">
     </Measure>
-    <Measure name="DistroDisp" column="qtd_distro_disp" datatype="Integer" aggregator="sum" description="Distro Disp" visible="true">
+    <Measure name="Softwares Disponiveis" column="qtd_soft_disp" datatype="Integer" aggregator="distinct-count" visible="true">
+    </Measure>
+    <Measure name="Softwares Instalados" column="qtd_soft_instala" datatype="Integer" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="Workshops" column="qtd_workshops" datatype="Integer" aggregator="sum" visible="true">
     </Measure>
   </Cube>
 </Schema>

@@ -68,7 +68,7 @@
   <created_user>-</created_user>
   <created_date>2015&#x2f;04&#x2f;22 21&#x3a;28&#x3a;25.205</created_date>
   <modified_user>-</modified_user>
-  <modified_date>2015&#x2f;04&#x2f;22 22&#x3a;47&#x3a;51.761</modified_date>
+  <modified_date>2015&#x2f;04&#x2f;25 10&#x3a;06&#x3a;22.836</modified_date>
   </info>
   <notepads>
   </notepads>
@@ -102,12 +102,15 @@
   <order>
   <hop> <from>Seleciona Municipios</from><to>Tira Acento</to><enabled>Y</enabled> </hop>
   <hop> <from>Tira Acento</from><to>Upper</to><enabled>Y</enabled> </hop>
-  <hop> <from>Upper</from><to>Grava Dimensao</to><enabled>Y</enabled> </hop>
   <hop> <from>Grava Dimensao</from><to>Execute SQL script</to><enabled>Y</enabled> </hop>
+  <hop> <from>Upper</from><to>Mapeia Fronteira</to><enabled>Y</enabled> </hop>
+  <hop> <from>Mapeia Fronteira</from><to>Mapeia Capital</to><enabled>Y</enabled> </hop>
+  <hop> <from>Mapeia Capital</from><to>Mapeia Semi Arido</to><enabled>Y</enabled> </hop>
+  <hop> <from>Mapeia Semi Arido</from><to>Grava Dimensao</to><enabled>Y</enabled> </hop>
   </order>
   <step>
-    <name>Seleciona Municipios</name>
-    <type>TableInput</type>
+    <name>Execute SQL script</name>
+    <type>ExecSQL</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -117,193 +120,22 @@
            <schema_name/>
            </partitioning>
     <connection>MySQL Local FLISOL 2</connection>
-    <sql>SELECT&#xa;  idn_municipio&#xa;, cod_municipio&#xa;, cod_geo_munic&#xa;, idn_regiao&#xa;, nom_regiao&#xa;, nom_ex_regiao&#xa;, red_regiao&#xa;, idn_uf&#xa;, red_uf&#xa;, nom_uf&#xa;, nom_ex_uf&#xa;, idn_meso&#xa;, nom_meso&#xa;, nom_ex_meso&#xa;, red_meso&#xa;, idn_micro&#xa;, nom_micro&#xa;, nom_ex_micro&#xa;, red_micro&#xa;, idn_reg_metro&#xa;, nom_reg_metro&#xa;, nom_ex_reg_metro&#xa;, red_reg_metro&#xa;, idn_agl_urbano&#xa;, nom_agl_urbano&#xa;, nom_ex_agl_urbano&#xa;, nom_municipio&#xa;, nom_ex_municipio&#xa;, concat&#x28;nom_ex_municipio,&#x27;&#x2f;&#x27;,red_uf&#x29; nom_munic_uf&#xa;, sit_municipio&#xa;, ind_amazonia_legal&#xa;, ind_fronteira&#xa;, ind_capital&#xa;, ind_semi_arido&#xa;, lat_municipio&#xa;, lon_municipio&#xa;, alt_municipio&#xa;, are_municipio&#xa;, url_municipio&#xa;FROM apoio_municipios&#xa;</sql>
-    <limit>0</limit>
-    <lookup/>
-    <execute_each_row>N</execute_each_row>
-    <variables_active>N</variables_active>
-    <lazy_conversion_active>N</lazy_conversion_active>
+    <execute_each_row>Y</execute_each_row>
+    <single_statement>N</single_statement>
+    <replace_variables>N</replace_variables>
+    <quoteString>N</quoteString>
+    <sql>update dim_municipios   &#xa;   set cod_geo_munic &#x3d; 1,&#xa;       nom_regiao &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       red_regiao &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       red_uf &#x3d; &#x27;NI&#x27;,&#xa;       nom_uf &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       nom_meso &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       red_meso &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       nom_micro &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       red_micro &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       nom_municipio &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       nom_municipio_uf &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       ind_fronteira &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       ind_capital &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       ind_semi_arido &#x3d; &#x27;NAO INFORMADO&#x27;&#xa; where key_municipio &#x3d; 1</sql>
+    <set_params>N</set_params>
+    <insert_field/>
+    <update_field/>
+    <delete_field/>
+    <read_field/>
+    <arguments>
+    </arguments>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>69</xloc>
-      <yloc>31</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Upper</name>
-    <type>StringOperations</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <fields>
-      <field>
-        <in_stream_name>ind_amazonia_legal</in_stream_name>
-        <out_stream_name/>
-        <trim_type>none</trim_type>
-        <lower_upper>upper</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-      <field>
-        <in_stream_name>ind_capital</in_stream_name>
-        <out_stream_name/>
-        <trim_type>none</trim_type>
-        <lower_upper>upper</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-      <field>
-        <in_stream_name>ind_fronteira</in_stream_name>
-        <out_stream_name/>
-        <trim_type>none</trim_type>
-        <lower_upper>upper</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-      <field>
-        <in_stream_name>ind_semi_arido</in_stream_name>
-        <out_stream_name/>
-        <trim_type>none</trim_type>
-        <lower_upper>upper</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-      <field>
-        <in_stream_name>red_micro</in_stream_name>
-        <out_stream_name/>
-        <trim_type>none</trim_type>
-        <lower_upper>upper</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-      <field>
-        <in_stream_name>red_meso</in_stream_name>
-        <out_stream_name/>
-        <trim_type>none</trim_type>
-        <lower_upper>upper</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-      <field>
-        <in_stream_name>red_regiao</in_stream_name>
-        <out_stream_name/>
-        <trim_type>none</trim_type>
-        <lower_upper>upper</lower_upper>
-        <padding_type>none</padding_type>
-        <pad_char/>
-        <pad_len/>
-        <init_cap>no</init_cap>
-        <mask_xml>none</mask_xml>
-        <digits>none</digits>
-        <remove_special_characters>none</remove_special_characters>
-      </field>
-    </fields>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>310</xloc>
-      <yloc>32</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Tira Acento</name>
-    <type>ReplaceString</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <fields>
-      <field>
-        <in_stream_name>ind_amazonia_legal</in_stream_name>
-        <out_stream_name/>
-        <use_regex>no</use_regex>
-        <replace_string>&#xe3;</replace_string>
-        <replace_by_string>a</replace_by_string>
-        <set_empty_string>N</set_empty_string>
-        <replace_field_by_string/>
-        <whole_word>no</whole_word>
-        <case_sensitive>no</case_sensitive>
-      </field>
-      <field>
-        <in_stream_name>ind_fronteira</in_stream_name>
-        <out_stream_name/>
-        <use_regex>no</use_regex>
-        <replace_string>&#xe3;</replace_string>
-        <replace_by_string>a</replace_by_string>
-        <set_empty_string>N</set_empty_string>
-        <replace_field_by_string/>
-        <whole_word>no</whole_word>
-        <case_sensitive>no</case_sensitive>
-      </field>
-      <field>
-        <in_stream_name>ind_capital</in_stream_name>
-        <out_stream_name/>
-        <use_regex>no</use_regex>
-        <replace_string>&#xe3;</replace_string>
-        <replace_by_string>a</replace_by_string>
-        <set_empty_string>N</set_empty_string>
-        <replace_field_by_string/>
-        <whole_word>no</whole_word>
-        <case_sensitive>no</case_sensitive>
-      </field>
-      <field>
-        <in_stream_name>ind_semi_arido</in_stream_name>
-        <out_stream_name/>
-        <use_regex>no</use_regex>
-        <replace_string>&#xe3;</replace_string>
-        <replace_by_string>a</replace_by_string>
-        <set_empty_string>N</set_empty_string>
-        <replace_field_by_string/>
-        <whole_word>no</whole_word>
-        <case_sensitive>no</case_sensitive>
-      </field>
-    </fields>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>195</xloc>
-      <yloc>32</yloc>
+      <xloc>64</xloc>
+      <yloc>132</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -427,15 +259,15 @@
       <start_date_field_name/>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>438</xloc>
-      <yloc>31</yloc>
+      <xloc>182</xloc>
+      <yloc>132</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
 
   <step>
-    <name>Execute SQL script</name>
-    <type>ExecSQL</type>
+    <name>Seleciona Municipios</name>
+    <type>TableInput</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -445,22 +277,277 @@
            <schema_name/>
            </partitioning>
     <connection>MySQL Local FLISOL 2</connection>
-    <execute_each_row>Y</execute_each_row>
-    <single_statement>N</single_statement>
-    <replace_variables>N</replace_variables>
-    <quoteString>N</quoteString>
-    <sql>update dim_municipios   &#xa;   set nom_regiao &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       red_regiao &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       red_uf &#x3d; &#x27;NI&#x27;,&#xa;       nom_uf &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       nom_meso &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       red_meso &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       nom_micro &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       red_micro &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       nom_municipio &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       nom_municipio_uf &#x3d; &#x27;NAO INFORMADO&#x27;,&#xa;       ind_fronteira &#x3d; &#x27;NIN&#x27;,&#xa;       ind_capital &#x3d; &#x27;NIN&#x27;,&#xa;       ind_semi_arido &#x3d; &#x27;NIN&#x27;&#xa; where key_municipio &#x3d; 1</sql>
-    <set_params>N</set_params>
-    <insert_field/>
-    <update_field/>
-    <delete_field/>
-    <read_field/>
-    <arguments>
-    </arguments>
+    <sql>SELECT&#xa;  idn_municipio&#xa;, cod_municipio&#xa;, cod_geo_munic&#xa;, idn_regiao&#xa;, nom_regiao&#xa;, nom_ex_regiao&#xa;, red_regiao&#xa;, idn_uf&#xa;, red_uf&#xa;, nom_uf&#xa;, nom_ex_uf&#xa;, idn_meso&#xa;, nom_meso&#xa;, nom_ex_meso&#xa;, red_meso&#xa;, idn_micro&#xa;, nom_micro&#xa;, nom_ex_micro&#xa;, red_micro&#xa;, idn_reg_metro&#xa;, nom_reg_metro&#xa;, nom_ex_reg_metro&#xa;, red_reg_metro&#xa;, idn_agl_urbano&#xa;, nom_agl_urbano&#xa;, nom_ex_agl_urbano&#xa;, nom_municipio&#xa;, nom_ex_municipio&#xa;, concat&#x28;nom_ex_municipio,&#x27;&#x2f;&#x27;,red_uf&#x29; nom_munic_uf&#xa;, sit_municipio&#xa;, ind_amazonia_legal&#xa;, ind_fronteira&#xa;, ind_capital&#xa;, ind_semi_arido&#xa;, lat_municipio&#xa;, lon_municipio&#xa;, alt_municipio&#xa;, are_municipio&#xa;, url_municipio&#xa;FROM apoio_municipios&#xa;</sql>
+    <limit>0</limit>
+    <lookup/>
+    <execute_each_row>N</execute_each_row>
+    <variables_active>N</variables_active>
+    <lazy_conversion_active>N</lazy_conversion_active>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>581</xloc>
+      <xloc>69</xloc>
       <yloc>31</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Tira Acento</name>
+    <type>ReplaceString</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>
+      <field>
+        <in_stream_name>ind_amazonia_legal</in_stream_name>
+        <out_stream_name/>
+        <use_regex>no</use_regex>
+        <replace_string>&#xe3;</replace_string>
+        <replace_by_string>a</replace_by_string>
+        <set_empty_string>N</set_empty_string>
+        <replace_field_by_string/>
+        <whole_word>no</whole_word>
+        <case_sensitive>no</case_sensitive>
+      </field>
+      <field>
+        <in_stream_name>ind_fronteira</in_stream_name>
+        <out_stream_name/>
+        <use_regex>no</use_regex>
+        <replace_string>&#xe3;</replace_string>
+        <replace_by_string>a</replace_by_string>
+        <set_empty_string>N</set_empty_string>
+        <replace_field_by_string/>
+        <whole_word>no</whole_word>
+        <case_sensitive>no</case_sensitive>
+      </field>
+      <field>
+        <in_stream_name>ind_capital</in_stream_name>
+        <out_stream_name/>
+        <use_regex>no</use_regex>
+        <replace_string>&#xe3;</replace_string>
+        <replace_by_string>a</replace_by_string>
+        <set_empty_string>N</set_empty_string>
+        <replace_field_by_string/>
+        <whole_word>no</whole_word>
+        <case_sensitive>no</case_sensitive>
+      </field>
+      <field>
+        <in_stream_name>ind_semi_arido</in_stream_name>
+        <out_stream_name/>
+        <use_regex>no</use_regex>
+        <replace_string>&#xe3;</replace_string>
+        <replace_by_string>a</replace_by_string>
+        <set_empty_string>N</set_empty_string>
+        <replace_field_by_string/>
+        <whole_word>no</whole_word>
+        <case_sensitive>no</case_sensitive>
+      </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>195</xloc>
+      <yloc>32</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Upper</name>
+    <type>StringOperations</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>
+      <field>
+        <in_stream_name>ind_amazonia_legal</in_stream_name>
+        <out_stream_name/>
+        <trim_type>none</trim_type>
+        <lower_upper>upper</lower_upper>
+        <padding_type>none</padding_type>
+        <pad_char/>
+        <pad_len/>
+        <init_cap>no</init_cap>
+        <mask_xml>none</mask_xml>
+        <digits>none</digits>
+        <remove_special_characters>none</remove_special_characters>
+      </field>
+      <field>
+        <in_stream_name>ind_capital</in_stream_name>
+        <out_stream_name/>
+        <trim_type>none</trim_type>
+        <lower_upper>upper</lower_upper>
+        <padding_type>none</padding_type>
+        <pad_char/>
+        <pad_len/>
+        <init_cap>no</init_cap>
+        <mask_xml>none</mask_xml>
+        <digits>none</digits>
+        <remove_special_characters>none</remove_special_characters>
+      </field>
+      <field>
+        <in_stream_name>ind_fronteira</in_stream_name>
+        <out_stream_name/>
+        <trim_type>none</trim_type>
+        <lower_upper>upper</lower_upper>
+        <padding_type>none</padding_type>
+        <pad_char/>
+        <pad_len/>
+        <init_cap>no</init_cap>
+        <mask_xml>none</mask_xml>
+        <digits>none</digits>
+        <remove_special_characters>none</remove_special_characters>
+      </field>
+      <field>
+        <in_stream_name>ind_semi_arido</in_stream_name>
+        <out_stream_name/>
+        <trim_type>none</trim_type>
+        <lower_upper>upper</lower_upper>
+        <padding_type>none</padding_type>
+        <pad_char/>
+        <pad_len/>
+        <init_cap>no</init_cap>
+        <mask_xml>none</mask_xml>
+        <digits>none</digits>
+        <remove_special_characters>none</remove_special_characters>
+      </field>
+      <field>
+        <in_stream_name>red_micro</in_stream_name>
+        <out_stream_name/>
+        <trim_type>none</trim_type>
+        <lower_upper>upper</lower_upper>
+        <padding_type>none</padding_type>
+        <pad_char/>
+        <pad_len/>
+        <init_cap>no</init_cap>
+        <mask_xml>none</mask_xml>
+        <digits>none</digits>
+        <remove_special_characters>none</remove_special_characters>
+      </field>
+      <field>
+        <in_stream_name>red_meso</in_stream_name>
+        <out_stream_name/>
+        <trim_type>none</trim_type>
+        <lower_upper>upper</lower_upper>
+        <padding_type>none</padding_type>
+        <pad_char/>
+        <pad_len/>
+        <init_cap>no</init_cap>
+        <mask_xml>none</mask_xml>
+        <digits>none</digits>
+        <remove_special_characters>none</remove_special_characters>
+      </field>
+      <field>
+        <in_stream_name>red_regiao</in_stream_name>
+        <out_stream_name/>
+        <trim_type>none</trim_type>
+        <lower_upper>upper</lower_upper>
+        <padding_type>none</padding_type>
+        <pad_char/>
+        <pad_len/>
+        <init_cap>no</init_cap>
+        <mask_xml>none</mask_xml>
+        <digits>none</digits>
+        <remove_special_characters>none</remove_special_characters>
+      </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>310</xloc>
+      <yloc>32</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Mapeia Fronteira</name>
+    <type>ValueMapper</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <field_to_use>ind_fronteira</field_to_use>
+    <target_field/>
+    <non_match_default>INTERIOR</non_match_default>
+    <fields>
+      <field>
+        <source_value>SIM</source_value>
+        <target_value>FRONTEIRA</target_value>
+      </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>445</xloc>
+      <yloc>33</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Mapeia Capital</name>
+    <type>ValueMapper</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <field_to_use>ind_capital</field_to_use>
+    <target_field/>
+    <non_match_default>MUNICIPIO</non_match_default>
+    <fields>
+      <field>
+        <source_value>SIM</source_value>
+        <target_value>CAPITAL</target_value>
+      </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>444</xloc>
+      <yloc>133</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Mapeia Semi Arido</name>
+    <type>ValueMapper</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <field_to_use>ind_semi_arido</field_to_use>
+    <target_field/>
+    <non_match_default>NAO INDICADO</non_match_default>
+    <fields>
+      <field>
+        <source_value>SIM</source_value>
+        <target_value>SEMI-ARIDO</target_value>
+      </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>307</xloc>
+      <yloc>134</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
