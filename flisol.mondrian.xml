@@ -1,0 +1,38 @@
+<Schema name="FLISOL" description="Estat&#237;sticas FLISOL Brasil" measuresCaption="Medidas">
+  <Cube name="FLISOL" caption="FLISOL" visible="true" description="Estat&#237;sticas Flisol no Brasil" cache="false" enabled="true">
+    <Table name="fato_flisol">
+    </Table>
+    <Dimension type="TimeDimension" visible="true" foreignKey="key_tempo_data" name="Datas" description="Datas">
+      <Hierarchy name="Data" visible="true" hasAll="true" allMemberName="Datas" allMemberCaption="Datas" primaryKey="key_tempo_data" description="Data do Evento">
+        <Table name="dim_tempo_data" alias="">
+        </Table>
+        <Level name="Ano" visible="true" table="dim_tempo_data" column="dat_ano" type="Integer" uniqueMembers="true" levelType="TimeYears" hideMemberIf="Never" description="Ano">
+        </Level>
+        <Level name="Mes" visible="true" table="dim_tempo_data" column="dat_mes_reduz" ordinalColumn="dat_mes" type="String" uniqueMembers="true" levelType="TimeMonths" description="Mes">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Dimension type="StandardDimension" visible="true" foreignKey="key_municipio" name="Municipios">
+      <Hierarchy name="Municipio" visible="true" hasAll="true" primaryKey="key_municipio">
+        <Table name="dim_municipios">
+        </Table>
+        <Level name="MesoReg" visible="true" table="dim_municipios" column="nom_meso" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never" description="Meso Regiao">
+        </Level>
+        <Level name="MicroReg" visible="true" table="dim_municipios" column="nom_micro" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never" description="Micro Regiao">
+        </Level>
+        <Level name="Regiao" visible="true" table="dim_municipios" column="nom_regiao" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="Estado" visible="true" table="dim_municipios" column="nom_uf" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+        <Level name="Municipio" visible="true" table="dim_municipios" column="nom_municipio_uf" type="String" uniqueMembers="true" levelType="Regular" hideMemberIf="Never">
+        </Level>
+      </Hierarchy>
+    </Dimension>
+    <Measure name="Municipios" column="key_municipio" datatype="Integer" aggregator="count" visible="true">
+    </Measure>
+    <Measure name="Palestras" column="qtd_palestras" datatype="Integer" aggregator="sum" visible="true">
+    </Measure>
+    <Measure name="DistroDisp" column="qtd_distro_disp" datatype="Integer" aggregator="sum" description="Distro Disp" visible="true">
+    </Measure>
+  </Cube>
+</Schema>
